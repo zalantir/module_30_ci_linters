@@ -30,6 +30,23 @@ def created_recipe_id(client: TestClient) -> int:
     return recipe_id
 
 
+@pytest.fixture(scope="session", autouse=True)
+def ensure_one_recipe(client: TestClient) -> None:
+    resp = client.get("/api/recipes")
+    resp.raise_for_status()
+    data = resp.json()
+    if isinstance(data, list) and len(data) > 0:
+        return
+    payload = {
+        "name": "seed-recipe",
+        "cook_time": 5,
+        "description": "seed",
+        "ingredients": ["Хлеб", "Соль"],
+    }
+    create = client.post("/api/recipes", json=payload)
+    assert create.status_code in (200, 201), create.text
+
+
 def test_get_form_page(client: TestClient) -> None:
     """Страница создания нового рецепта (/recipes/new)
     открывается и содержит заголовок 'Новый рецепт'."""

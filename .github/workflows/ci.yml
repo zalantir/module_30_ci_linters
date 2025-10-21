@@ -63,13 +63,25 @@ jobs:
         run: |
           pwd
           ls -la
-          python -V
-          pip freeze | sed -n '1,120p'
-          echo "----- tree -----"
-          sudo apt-get update && sudo apt-get install -y tree
-          tree -L 3
+          echo "----- tree (3 levels) -----"
+          sudo apt-get update >/dev/null 2>&1 && sudo apt-get install -y tree >/dev/null 2>&1 || true
+          tree -L 3 || true
 
-      - name: Run tests - pytest
+      - name: Sanity import
         run: |
-          pytest -q -ra -s hw1/tests
+          python - <<'PY'
+          import sys, os
+          print("CWD:", os.getcwd())
+          print("sys.path[:3]:", sys.path[:3])
+          print("PYTHONPATH:", os.environ.get("PYTHONPATH"))
+          import importlib
+          mod = importlib.import_module("hw1.main")
+          print("Imported hw1.main; has app:", hasattr(mod, "app"))
+          PY
+
+      - name: Run tests - pytest (explicit path with verbose)
+        run: |
+          set -xe
+          pytest -vv -ra -s hw1/tests
+
 
