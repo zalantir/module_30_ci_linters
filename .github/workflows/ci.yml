@@ -59,5 +59,17 @@ jobs:
       - name: Type check - mypy
         run: mypy .
 
+      - name: Show workspace layout
+        run: |
+          pwd
+          ls -la
+          python -V
+          pip freeze | sed -n '1,120p'
+          echo "----- tree -----"
+          sudo apt-get update && sudo apt-get install -y tree
+          tree -L 3
+
       - name: Run tests - pytest
-        run: pytest -q
+        run: |
+          pytest -q -ra -s hw1/tests
+
