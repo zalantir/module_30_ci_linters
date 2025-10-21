@@ -12,17 +12,13 @@ permissions:
 jobs:
   lint-test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: homework
-
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.12"]
 
     env:
-      PYTHONPATH: ${{ github.workspace }}/homework
+      PYTHONPATH: ${{ github.workspace }}
       TESTING: "1"
 
     steps:
@@ -35,10 +31,16 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
+      - name: Show Python & pip
+        run: |
+          python -V
+          pip -V
+
       - name: Install deps
         run: |
           if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # fallback, если нет requirements-файлов
           pip install \
             fastapi starlette jinja2 httpx uvicorn \
             sqlalchemy aiosqlite pydantic \
@@ -59,4 +61,3 @@ jobs:
 
       - name: Run tests - pytest
         run: pytest -q
-
