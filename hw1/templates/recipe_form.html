@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Новый рецепт{% endblock %}
+
+{% block content %}
+  <h1>Новый рецепт</h1>
+
+  {% if error %}
+    <div class="form-error">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" action="{{ url_for('create_recipe') }}">
+    <label>
+      Название
+      <input type="text" name="name" value="{{ values.name }}" required>
+    </label>
+
+    <label>
+      Время готовки (мин)
+      <input type="number" min="1" step="1" name="cook_time" value="{{ values.cook_time }}" required>
+    </label>
+
+    <label>
+      Описание
+      <textarea name="description" rows="4" required>{{ values.description }}</textarea>
+    </label>
+
+    <label>
+      Ингредиенты
+      <small>Можно через запятую или каждый ингредиент с новой строки.</small>
+      <textarea name="ingredients" rows="4" required>{{ values.ingredients }}</textarea>
+    </label>
+
+    <div style="display:flex; gap:8px;">
+      <button type="submit">Сохранить</button>
+      <a href="{{ url_for('recipes_page') }}" class="button-link">Отмена</a>
+    </div>
+  </form>
+{% endblock %}

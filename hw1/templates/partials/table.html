@@ -1,0 +1,26 @@
+{% macro render_table(headers, rows, classes="table table--hover", links=None) %}
+<table class="{{ classes }}">
+  <thead>
+    <tr>
+      {% for h in headers %}<th>{{ h }}</th>{% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% if rows and rows|length %}
+      {% for row in rows %}
+        {% if links and links[loop.index0] %}
+          <tr class="row-link" onclick="window.location='{{ links[loop.index0] }}'">
+        {% else %}
+          <tr>
+        {% endif %}
+          {% for cell in row %}
+            <td>{{ cell }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr><td colspan="{{ headers|length }}" class="empty">Нет данных</td></tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endmacro %}

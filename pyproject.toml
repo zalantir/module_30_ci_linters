@@ -1,0 +1,25 @@
+[tool.black]
+line-length = 88
+target-version = ["py311","py312"]
+exclude = '''
+(
+  /(
+      \.venv
+    | \.git
+    | \.mypy_cache
+    | \.pytest_cache
+    | build
+    | dist
+    | alembic
+  )/
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip = [".venv","build","dist","alembic"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]

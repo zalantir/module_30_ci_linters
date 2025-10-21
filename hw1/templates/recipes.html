@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from "partials/table.html" import render_table %}
+
+{% block title %}Рецепты{% endblock %}
+
+{% block content %}
+  <h1>Рецепты</h1>
+  <div class="table-responsive">
+    {{ render_table(
+      ["Название", "Просмотры", "Время готовки (мин)"],
+      rows,
+      classes="table table--hover",
+      links=links
+    ) }}
+  </div>
+{% endblock %}
