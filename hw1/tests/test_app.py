@@ -1,16 +1,9 @@
-from collections.abc import Generator
 from uuid import uuid4
 
 import pytest
 from starlette.testclient import TestClient
 
 from hw1.main import app
-
-
-@pytest.fixture()
-def client() -> Generator[TestClient, None, None]:
-    with TestClient(app) as c:
-        yield c
 
 
 @pytest.fixture()
