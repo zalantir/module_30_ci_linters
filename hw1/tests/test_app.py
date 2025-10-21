@@ -3,8 +3,6 @@ from uuid import uuid4
 import pytest
 from starlette.testclient import TestClient
 
-from hw1.main import app
-
 
 @pytest.fixture()
 def created_recipe_id(client: TestClient) -> int:
